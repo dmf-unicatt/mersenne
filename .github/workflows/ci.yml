@@ -1,0 +1,80 @@
+name: CI di mersenne
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * MON"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: debian:13
+    steps:
+      - name: Installa git
+        run: |
+          export DEBIAN_FRONTEND="noninteractive"
+          apt update -y -q
+          apt install -y -qq git
+      - uses: actions/checkout@v6
+      - name: Configura container
+        run: |
+          export DEBIAN_FRONTEND="noninteractive"
+          apt install -y -qq chromium chromium-driver python3-pip
+          rm /usr/lib/python3.13/EXTERNALLY-MANAGED
+      - name: Installa mersenne
+        run: |
+          python3 -m pip install .[docs,lint,tests]
+      - name: Pulisci file di build
+        run: |
+          git config --global --add safe.directory $PWD
+          git clean -xdf
+      - name: Aggiungi DJANGO_SETTINGS_MODULE all'ambiente e crea settings.ini
+        run: |
+          echo "DJANGO_SETTINGS_MODULE=config.settings" >> $GITHUB_ENV
+          echo "DJANGO_SECRET_KEY=mersenne-CI-secret-key" >> $GITHUB_ENV
+      - name: Esegui ruff
+        run: |
+          python3 -m ruff format --check .
+          python3 -m ruff check .
+      - name: Esegui mypy
+        run: |
+          python3 -m mypy --exclude=conftest.py .
+          find . -type f -name conftest.py -exec python3 -m mypy {} \;
+      - name: Esegui yamllint
+        run: |
+          python3 -m yamllint -d "{extends: default, rules: {document-start: {present: false}, line-length: disable, truthy: {check-keys: false}}}" .github
+      - name: Controllo licenza SPDX
+        run: |
+          git ls-files . | grep -vE '\.dockerignore$|^\.github|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.rst$|\.score$|\.toml$|\.typed$|^AUTHORS$|^LICENSE$' | while read -r f; do head -n 7 "$f" | grep -q "SPDX-License-Identifier:" || echo "SPDX mancante: $f"; done | grep "SPDX mancante:" && exit 1 || exit 0
+      - name: Genera documentazione
+        run: |
+          cd docs && python3 -m sphinx -W -b html . build/html
+      - name: Esegui i test di unità
+        run: |
+          COVERAGE_FILE=.coverage_unit python3 -m coverage run --source=mersenne -m pytest --random-order tests/unit
+      - name: Esegui i test di integrazione
+        run: |
+          COVERAGE_FILE=.coverage_integration_full python3 -m coverage run --source=mersenne -m pytest --random-order tests/integration
+      - name: Verifica copertura test
+        run: |
+          python3 -m coverage combine .coverage*
+          python3 -m coverage report --fail-under=100 --show-missing --skip-covered
+      - name: Esegui i test con browser
+        run: |
+          python3 -m pytest --random-order tests/browser
+
+  controllo-disabilitazione-workflow-periodico:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    steps:
+      - name: Avvisa se il workflow periodico sta per essere disabilitato
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        with:
+          workflow-filename: ci.yml
+          days-elapsed: 50

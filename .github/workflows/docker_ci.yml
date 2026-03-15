@@ -1,0 +1,110 @@
+name: CI docker
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * MON"
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            runs-on: ubuntu-latest
+            versione-debian: 13
+            tipo-database: PostgreSQL
+          - arch: amd64
+            runs-on: ubuntu-latest
+            versione-debian: 13
+            tipo-database: SQLite3
+          - arch: amd64
+            runs-on: ubuntu-latest
+            versione-debian: testing
+            tipo-database: PostgreSQL
+          # - arch: amd64
+          #  runs-on: ubuntu-latest
+          #  versione-debian: unstable
+          #  tipo-database: PostgreSQL
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            versione-debian: 13
+            tipo-database: PostgreSQL
+      fail-fast: false
+    runs-on: ${{ matrix.runs-on }}
+    defaults:
+      run:
+        working-directory: docker
+    steps:
+      - uses: actions/checkout@v6
+      - name: Crea immagine
+        run: |
+          ./crea_immagine.sh  ${{ matrix.versione-debian }}
+      - name: Esegui lint con docker run
+        if: matrix.tipo-database != 'SQLite3'
+        run: |
+          ./esegui_lint.sh run ruff
+          ./esegui_lint.sh run mypy
+          ./esegui_lint.sh run spdx
+      - name: Esegui test con docker run
+        run: |
+          ./esegui_test.sh run unit ${{ matrix.tipo-database }}
+          ./esegui_test.sh run integration  ${{ matrix.tipo-database }}
+          ./esegui_test.sh run browser ${{ matrix.tipo-database }}
+      - name: Avvia il contenitore che verrà usato da docker exec
+        if: matrix.tipo-database != 'SQLite3'
+        run: |
+          ./crea_volume.sh
+          ./crea_contenitore.sh
+          ./avvia_contenitore.sh
+      - name: Esegui lint con docker exec
+        if: matrix.tipo-database != 'SQLite3'
+        run: |
+          ./esegui_lint.sh exec ruff
+          ./esegui_lint.sh exec mypy
+          ./esegui_lint.sh exec spdx
+      - name: Avvia test con docker exec
+        if: matrix.tipo-database != 'SQLite3'
+        run: |
+          ./esegui_test.sh exec unit ${{ matrix.tipo-database }}
+          ./esegui_test.sh exec integration  ${{ matrix.tipo-database }}
+          ./esegui_test.sh exec browser ${{ matrix.tipo-database }}
+      - name: Ferma il contenitore che è stato usato da docker exec
+        if: matrix.tipo-database != 'SQLite3'
+        run: |
+          ./ferma_contenitore.sh
+      - name: Pubblica l'immagine su GitHub packages
+        if: matrix.tipo-database != 'SQLite3' && matrix.versione-debian != 'testing' && matrix.versione-debian != 'unstable' && github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main'
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker tag ghcr.io/dmf-unicatt/mersenne:latest ghcr.io/dmf-unicatt/mersenne:latest-${{ matrix.arch }}
+          docker push ghcr.io/dmf-unicatt/mersenne:latest-${{ matrix.arch }}
+
+  pubblica-immagine-multiarch:
+    needs: [test]
+    if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pubblica l'immagine multi-architettura su GitHub packages
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker buildx imagetools create \
+            -t ghcr.io/dmf-unicatt/mersenne:latest \
+            ghcr.io/dmf-unicatt/mersenne:latest-amd64 \
+            ghcr.io/dmf-unicatt/mersenne:latest-arm64
+
+  controllo-disabilitazione-workflow-periodico:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    steps:
+      - name: Avvisa se il workflow periodico sta per essere disabilitato
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        with:
+          workflow-filename: docker_ci.yml
+          days-elapsed: 50
