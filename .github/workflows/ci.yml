@@ -34,10 +34,11 @@ jobs:
         run: |
           git config --global --add safe.directory $PWD
           git clean -xdf
-      - name: Aggiungi DJANGO_SETTINGS_MODULE all'ambiente e crea settings.ini
+      - name: Aggiungi DJANGO_SETTINGS_MODULE, DJANGO_SECRET_KEY e DJANGO_DEBUG all'ambiente
         run: |
           echo "DJANGO_SETTINGS_MODULE=config.settings" >> $GITHUB_ENV
           echo "DJANGO_SECRET_KEY=mersenne-CI-secret-key" >> $GITHUB_ENV
+          echo "DJANGO_DEBUG=True" >> $GITHUB_ENV
       - name: Esegui ruff
         run: |
           python3 -m ruff format --check .
