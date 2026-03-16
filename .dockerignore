@@ -1,3 +1,6 @@
 .git*
 docker
 !docker/_entrypoint.sh
+config/db.sqlite3
+config/django.log
+config/settings.ini

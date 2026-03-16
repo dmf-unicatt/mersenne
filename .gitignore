@@ -4,10 +4,9 @@
 *.egg
 *.egg-info
 *.py[cod]
+.benchmarks
 .coverage
 .pytest_cache
-build
-dist
-db.sqlite3
-django.log
-settings.ini
+config/db.sqlite3
+config/django.log
+config/settings.ini
