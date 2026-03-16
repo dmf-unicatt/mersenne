@@ -134,15 +134,28 @@ class IPAddressFilter(logging.Filter):
     """Filtro di logging per aggiungere l'indirizzo IP del client."""
 
     def filter(self, record: logging.LogRecord) -> bool:
-        """Aggiunge l'indirizzo IP del client al record di log."""
-        if hasattr(record, "request"):
-            x_forwarded_for = record.request.META.get("HTTP_X_FORWARDED_FOR")
-            if x_forwarded_for:
-                record.ip = x_forwarded_for.split(",")[0]
-            else:
-                record.ip = record.request.META.get("REMOTE_ADDR")
-        else:
-            record.ip = None
+        """
+        Aggiunge l'indirizzo IP del client al record di log in modo sicuro.
+
+        Alcuni record non contengono una HttpRequest (es. logging del server
+        wsgiref) e possono fornire un oggetto socket come `request`. Qui
+        controlliamo la presenza di `request` e di `META` in modo robusto e
+        impostiamo `record.ip` a `None` quando non è possibile estrarre l'IP.
+        """
+        ip = None
+        request = getattr(record, "request", None)
+        if request is not None:
+            try:
+                meta = getattr(request, "META", None)
+                if isinstance(meta, dict):
+                    x_forwarded_for = meta.get("HTTP_X_FORWARDED_FOR")
+                    if x_forwarded_for:
+                        ip = x_forwarded_for.split(",")[0]
+                    else:
+                        ip = meta.get("REMOTE_ADDR")
+            except Exception:
+                ip = None
+        record.ip = ip
         return True
 
 
