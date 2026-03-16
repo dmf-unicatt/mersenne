@@ -10,3 +10,5 @@
 config/db.sqlite3
 config/django.log
 config/settings.ini
+config/static
+node_modules

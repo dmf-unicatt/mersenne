@@ -24,20 +24,27 @@ RUN echo 'PS1='"'"'\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[
 # Permetti l'installazione di pacchetti Python a livello di sistema tramite pip
 RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
-# Installa dipendenze per database e browser
-RUN apt update -y -q && \
-    apt install -y -qq chromium chromium-driver libpq-dev postgresql postgresql-client postgresql-contrib python3-psycopg2
+# Installa dipendenze per database
+RUN apt install -y -qq libpq-dev postgresql postgresql-client postgresql-contrib python3-psycopg2
 
 # L'installazione di postgres crea un nuovo utente; concedi a questo utente
 # di accedere in sola lettura a /root
 RUN chmod go+rx /root
+
+# Installa dipendenze per la gestione dei file statici
+RUN apt install -y -qq npm
+
+# Installa dipendenze per browser
+RUN apt install -y -qq chromium chromium-driver
 
 ## Parte 2: installazione di mersenne
 
 COPY . .
 
 RUN python3 -m pip install .[lint,tests] && \
-    rm -rf build dist *.egg-info
+    rm -rf build dist *.egg-info && \
+    npm install && \
+    npm run build
 
 ENV DJANGO_SETTINGS_MODULE="config.settings"
 

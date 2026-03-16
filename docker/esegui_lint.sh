@@ -24,10 +24,10 @@ set +u
 COMPONENTE=$2
 set -u
 if [[ -z "${COMPONENTE}" ]]; then
-    echo "Devi indicare il componente da controllare (ruff, mypy, spdx) come secondo argomento"
+    echo "Devi indicare il componente da controllare (ruff, mypy, biome, spdx) come secondo argomento"
     exit 1
 fi
-if [[ "${COMPONENTE}" != "ruff" && "${COMPONENTE}" != "mypy" && "${COMPONENTE}" != "spdx" ]]; then
+if [[ "${COMPONENTE}" != "ruff" && "${COMPONENTE}" != "mypy" &&  "${COMPONENTE}" != "biome" && "${COMPONENTE}" != "spdx" ]]; then
     echo "Componente non valido ${COMPONENTE}"
     exit 1
 fi
@@ -50,9 +50,13 @@ elif [[ "${COMPONENTE}" == "mypy" ]]; then
         python3 -m mypy --exclude=\"conftest.py|mersenne/migrations/.*\" . && \
         find . -type f -name conftest.py -exec python3 -m mypy {} \\; \
     "
+elif [[ "${COMPONENTE}" == "biome" ]]; then
+    COMANDO_LINT="\
+        npm run lint \
+    "
 elif [[ "${COMPONENTE}" == "spdx" ]]; then
     COMANDO_LINT="\
-        find . -type f | grep -vE '^./.bashrc|^./.bash_history|^./.cache|^./config/settings.ini|^./config/static|^./.profile|^./mersenne/migrations|^./AUTHORS$|^./LICENSE$|\.dockerignore$|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.rst$|\.score$|\.toml$|\.typed$' | while read -r f; do head -n 7 "\$f" | grep -q \"SPDX-License-Identifier:\" || echo \"SPDX mancante: \$f\"; done | grep \"SPDX mancante:\" && exit 1 || exit 0 \
+        find . -type f | grep -vE '^./.bashrc|^./.bash_history|^./.cache|^./config/settings.ini|^./config/static|^./mersenne/migrations|^./node_modules|^./.npm|^./.profile|^./AUTHORS$|^./LICENSE$|\.dockerignore$|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.rst$|\.score$|\.toml$|\.typed$' | while read -r f; do head -n 7 "\$f" | grep -q \"SPDX-License-Identifier:\" || echo \"SPDX mancante: \$f\"; done | grep \"SPDX mancante:\" && exit 1 || exit 0 \
     "
 fi
 

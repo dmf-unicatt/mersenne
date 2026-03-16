@@ -3,6 +3,6 @@
 # Questo file fa parte di mersenne.
 #
 # SPDX-License-Identifier: MIT
-"""Pacchetto con le viste dell'applicazione."""
+"""Configurazione dei template tags dell'applicazione."""
 
-from mersenne.views.index import index
+from mersenne.templatetags.vite import vite

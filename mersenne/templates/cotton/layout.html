@@ -1,0 +1,46 @@
+<!--
+Copyright (C) 2024-2026 degli autori di mersenne
+
+Questo file fa parte di mersenne.
+
+SPDX-License-Identifier: MIT
+-->
+<!DOCTYPE html>
+<c-vars title="mersenne" theme="mersenne" />
+<html lang="it" data-theme="{{ theme }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>mersenne - {{ title }}</title>
+        {% load vite %}
+
+        {% vite 'main' %}
+
+        {{ head }}
+    </head>
+    <body class="min-h-screen flex flex-col bg-base-200">
+        <c-navbar>
+        {{ header }}
+        </c-navbar>
+
+        {% if messages %}
+        <div class="px-4 pt-4 space-y-2 max-w-screen-xl mx-auto w-full">
+            {% for message in messages %}
+            <c-alert type="{{ message.tags }}">{{ message }}</c-alert>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <main class="flex-1 px-4 py-6 max-w-screen-xl mx-auto w-full">
+            {{ slot }}
+        </main>
+
+        <footer
+            class="footer footer-center bg-neutral text-neutral-content p-4 mt-auto"
+        >
+            <aside>
+                <p>Powered by <strong>mersenne</strong></p>
+            </aside>
+        </footer>
+    </body>
+</html>

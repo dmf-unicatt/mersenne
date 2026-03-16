@@ -10,4 +10,6 @@ API reference
    mersenne.models
    mersenne.services
    mersenne.services.test
+   mersenne.templatetags
+   mersenne.urls
    mersenne.views

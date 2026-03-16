@@ -25,15 +25,14 @@ jobs:
       - name: Configura container
         run: |
           export DEBIAN_FRONTEND="noninteractive"
-          apt install -y -qq chromium chromium-driver python3-pip
+          apt install -y -qq chromium chromium-driver npm python3-pip
           rm /usr/lib/python3.13/EXTERNALLY-MANAGED
       - name: Installa mersenne
         run: |
           python3 -m pip install .[docs,lint,tests]
-      - name: Pulisci file di build
-        run: |
-          git config --global --add safe.directory $PWD
-          git clean -xdf
+          rm -rf build dist *.egg-info
+          npm ci
+          npm run build
       - name: Aggiungi DJANGO_SETTINGS_MODULE, DJANGO_SECRET_KEY e DJANGO_DEBUG all'ambiente
         run: |
           echo "DJANGO_SETTINGS_MODULE=config.settings" >> $GITHUB_ENV
@@ -47,6 +46,9 @@ jobs:
         run: |
           python3 -m mypy --exclude=conftest.py .
           find . -type f -name conftest.py -exec python3 -m mypy {} \;
+      - name: Esegui biome
+        run: |
+          npm run lint
       - name: Esegui yamllint
         run: |
           python3 -m yamllint -d "{extends: default, rules: {document-start: {present: false}, line-length: disable, truthy: {check-keys: false}}}" .github

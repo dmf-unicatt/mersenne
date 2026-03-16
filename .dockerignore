@@ -1,6 +1,12 @@
+*.egg
+*.egg-info
+*.py[cod]
 .git*
-docker
-!docker/_entrypoint.sh
+!.gitignore
 config/db.sqlite3
 config/django.log
 config/settings.ini
+config/static
+docker
+!docker/_entrypoint.sh
+node_modules

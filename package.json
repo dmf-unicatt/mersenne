@@ -1,0 +1,19 @@
+{
+    "name": "cotton-begin",
+    "version": "0.0.0-dev.1",
+    "private": true,
+    "scripts": {
+        "lint": "biome check .",
+        "lint:write": "biome check --write .",
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "autoprefixer": "10.4.27",
+        "@biomejs/biome": "2.4.7",
+        "daisyui": "5.5.19",
+        "postcss": "8.5.8",
+        "@tailwindcss/postcss": "4.2.1",
+        "vite": "8.0.0"
+    }
+}

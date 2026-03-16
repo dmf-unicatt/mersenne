@@ -51,6 +51,7 @@ jobs:
         run: |
           ./esegui_lint.sh run ruff
           ./esegui_lint.sh run mypy
+          ./esegui_lint.sh run biome
           ./esegui_lint.sh run spdx
       - name: Esegui test con docker run
         run: |
@@ -68,6 +69,7 @@ jobs:
         run: |
           ./esegui_lint.sh exec ruff
           ./esegui_lint.sh exec mypy
+          ./esegui_lint.sh exec biome
           ./esegui_lint.sh exec spdx
       - name: Avvia test con docker exec
         if: matrix.tipo-database != 'SQLite3'
