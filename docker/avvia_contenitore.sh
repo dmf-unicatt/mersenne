@@ -21,9 +21,9 @@ else
     INTERVALLO=1
     for TENTATIVO in $(seq 1 ${MASSIMO_NUMERO_TENTATIVI}); do
         LOG_DOCKER=$(
-            docker logs --since "${TEMPO_AVVIO}" --timestamps ${ID_CONTENITORE}
+            docker logs --since "${TEMPO_AVVIO}" --timestamps ${ID_CONTENITORE} 2>&1
         )
-        if [[ "${LOG_DOCKER}" == *"Avvio del server"* ]]; then
+        if [[ "${LOG_DOCKER}" == *"Application startup complete"* ]]; then
             echo "${LOG_DOCKER}"
             break
         else

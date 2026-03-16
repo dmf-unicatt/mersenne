@@ -37,6 +37,9 @@ RUN apt install -y -qq npm
 # Installa dipendenze per browser
 RUN apt install -y -qq chromium chromium-driver
 
+# Installa dipendenze per il web server
+RUN python3 -m pip install uvicorn
+
 ## Parte 2: installazione di mersenne
 
 COPY . .

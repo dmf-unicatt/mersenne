@@ -198,7 +198,7 @@ fi
 cd /root
 if [[ $# -eq 0 ]]; then
     echo "Avvio del server"
-    python3 manage.py runserver 0.0.0.0:80
+    uvicorn config.asgi:application --host 0.0.0.0 --port 80 --workers 3
 else
     echo "NON avvio il server perché è stato fornito un comando: $@"
     exec "$@"
