@@ -16,7 +16,7 @@ def test_presenza_cartella_dati(data_dir: pathlib.Path) -> None:
     assert data_dir.is_dir()
     for elemento in data_dir.glob("*"):
         assert elemento.is_dir()
-        assert elemento.name in ("gare",)
+        assert elemento.name in ("gare", "screenshots")
 
 
 @pytest.mark.parametrize("estensione_gara", [".journal", ".json"])
@@ -60,6 +60,20 @@ def test_cartella_gare_contiene_solo_file_di_gara(
         assert elemento.is_file() or elemento.is_dir()
         if elemento.is_file():
             assert elemento.suffix in (".journal", ".json", ".score")
+        elif elemento.is_dir():
+            pass
+        else:
+            raise RuntimeError(f"Elemento non valido: {elemento}")
+
+
+def test_cartella_screenshots_contiene_solo_immagini(
+    data_dir: pathlib.Path,
+) -> None:
+    """Verifica che la cartella contenga solo file .png."""
+    for elemento in (data_dir / "screenshots").rglob("*"):
+        assert elemento.is_file() or elemento.is_dir()
+        if elemento.is_file():
+            assert elemento.suffix == ".png"
         elif elemento.is_dir():
             pass
         else:

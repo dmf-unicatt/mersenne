@@ -56,7 +56,7 @@ elif [[ "${COMPONENTE}" == "biome" ]]; then
     "
 elif [[ "${COMPONENTE}" == "spdx" ]]; then
     COMANDO_LINT="\
-        find . -type f | grep -vE '^./.bashrc|^./.bash_history|^./.cache|^./config/settings.ini|^./config/static|^./mersenne/migrations|^./node_modules|^./.npm|^./.profile|^./AUTHORS$|^./LICENSE$|\.dockerignore$|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.rst$|\.score$|\.toml$|\.typed$' | while read -r f; do head -n 7 "\$f" | grep -q \"SPDX-License-Identifier:\" || echo \"SPDX mancante: \$f\"; done | grep \"SPDX mancante:\" && exit 1 || exit 0 \
+        find . -type f | grep -vE '^./.bashrc|^./.bash_history|^./.cache|^./config/settings.ini|^./config/static|^./mersenne/migrations|^./node_modules|^./.npm|^./.profile|^./AUTHORS$|^./LICENSE$|\.dockerignore$|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.png$|\.rst$|\.score$|\.toml$|\.typed$' | while read -r f; do head -n 7 "\$f" | grep -q \"SPDX-License-Identifier:\" || echo \"SPDX mancante: \$f\"; done | grep \"SPDX mancante:\" && exit 1 || exit 0 \
     "
 fi
 

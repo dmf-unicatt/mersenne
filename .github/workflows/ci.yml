@@ -54,7 +54,7 @@ jobs:
           python3 -m yamllint -d "{extends: default, rules: {document-start: {present: false}, line-length: disable, truthy: {check-keys: false}}}" .github
       - name: Controllo licenza SPDX
         run: |
-          git ls-files . | grep -vE '\.dockerignore$|^\.github|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.rst$|\.score$|\.toml$|\.typed$|^AUTHORS$|^LICENSE$' | while read -r f; do head -n 7 "$f" | grep -q "SPDX-License-Identifier:" || echo "SPDX mancante: $f"; done | grep "SPDX mancante:" && exit 1 || exit 0
+          git ls-files . | grep -vE '\.dockerignore$|^\.github|\.gitignore$|\.journal$|\.json$|\.log$|\.md$|\.png$|\.rst$|\.score$|\.toml$|\.typed$|^AUTHORS$|^LICENSE$' | while read -r f; do head -n 7 "$f" | grep -q "SPDX-License-Identifier:" || echo "SPDX mancante: $f"; done | grep "SPDX mancante:" && exit 1 || exit 0
       - name: Genera documentazione
         run: |
           cd docs && python3 -m sphinx -W -b html . build/html
