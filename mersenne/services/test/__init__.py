@@ -8,3 +8,4 @@
 from mersenne.services.test.crea_gara import crea_gara
 from mersenne.services.test.crea_utente import crea_utente
 from mersenne.services.test.data_dir import data_dir
+from mersenne.services.test.disabilita_fixture import disabilita_fixture
