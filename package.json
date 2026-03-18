@@ -5,7 +5,7 @@
     "scripts": {
         "lint": "node mersenne/frontend/scripts/biome-lint.js . && node mersenne/frontend/scripts/check-classes.js",
         "lint:write": "node mersenne/frontend/scripts/biome-lint.js . --write",
-        "dev": "vite --strictPort",
+        "dev": "vite --clearScreen=false --strictPort=true",
         "build": "vite build"
     },
     "devDependencies": {
