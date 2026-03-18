@@ -13,6 +13,7 @@ import pytest
 import mersenne.services.test
 
 data_dir = mersenne.services.test.data_dir
+live_server = mersenne.services.test.live_server
 verifica_screenshot = mersenne.services.test.verifica_screenshot
 
 

@@ -6,6 +6,7 @@
 """Template tag per includere asset Vite nei template Django."""
 
 import json
+import os
 
 import django.conf
 import django.template
@@ -24,7 +25,7 @@ def vite(entry: str) -> django.utils.safestring.SafeString:
     # di sviluppo. In produzione, invece, ci aspettiamo che Vite abbia
     # generato un manifest.json
     DEBUG = django.conf.settings.DEBUG  # noqa: N806
-    if not DEBUG:
+    if not DEBUG:  # pragma: no cover
         BASE_DIR = django.conf.settings.BASE_DIR  # noqa: N806
         manifest_file = (
             BASE_DIR / "static" / "mersenne" / ".vite" / "manifest.json"
@@ -58,10 +59,12 @@ def vite(entry: str) -> django.utils.safestring.SafeString:
             return django.utils.safestring.mark_safe(
                 f"<!-- vite manifest not found: {manifest_file} -->"
             )
-    else:  # pragma: no cover
-        # Indirizzo del server di sviluppo Vite. La porta 5173 è definita
-        # nel file vite.config.js.
-        VITE_DEV_SERVER_URL = "http://localhost:5173"  # noqa: N806
+    else:
+        # Indirizzo del server di sviluppo Vite.
+        # La porta 5173 di default è definita nel file vite.config.js.
+        VITE_DEV_SERVER_URL = os.environ.get(  # noqa: N806
+            "VITE_DEV_SERVER_URL", "http://localhost:5173"
+        )
 
         # Costruisci i tag per includere il client di Vite e l'entrypoint
         # richiesto.

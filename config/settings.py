@@ -32,6 +32,7 @@ else:
 
 # Definizione applicazione
 INSTALLED_APPS = [
+    "mersenne.apps.MersenneConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_cotton.apps.SimpleAppConfig",
     "cotton_icons",
-    "mersenne.apps.MersenneConfig",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

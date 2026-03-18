@@ -25,8 +25,11 @@ jobs:
       - name: Configura container
         run: |
           export DEBIAN_FRONTEND="noninteractive"
-          apt install -y -qq chromium chromium-driver npm python3-pip
+          apt install -y -qq fonts-noto npm python3-pip
           rm /usr/lib/python3.13/EXTERNALLY-MANAGED
+          python3 -m pip install playwright
+          playwright install-deps
+          playwright install
       - name: Installa mersenne
         run: |
           python3 -m pip install .[docs,lint,tests]
