@@ -6,7 +6,10 @@ Questo file fa parte di mersenne.
 SPDX-License-Identifier: MIT
 -->
 <c-vars type="info" />
-<div role="alert" class="alert {% if type == 'danger' %}alert-error{% elif type == 'warning' %}alert-warning{% elif type == 'success' %}alert-success{% elif type == 'info' %}alert-info{% endif %}">
+<div
+    role="alert"
+    class="alert {% if type == 'danger' %}alert-error{% elif type == 'warning' %}alert-warning{% elif type == 'success' %}alert-success{% elif type == 'info' %}alert-info{% endif %}"
+>
     {% if type == 'danger' %}
     <c-heroicon.exclamation-triangle class="size-5" />
     {% elif type == 'warning' %}

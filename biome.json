@@ -1,8 +1,5 @@
 {
     "$schema": "https://biomejs.dev/schemas/2.4.7/schema.json",
-    "files": {
-        "includes": ["**", "!**/_templates/**/*.html"]
-    },
     "vcs": {
         "clientKind": "git",
         "enabled": true,
@@ -27,8 +24,7 @@
         "indentStyle": "space",
         "indentWidth": 4,
         "lineEnding": "lf",
-        "lineWidth": 80,
-        "includes": ["**", "!**/templates/**/*.html"]
+        "lineWidth": 80
     },
     "css": {
         "parser": {

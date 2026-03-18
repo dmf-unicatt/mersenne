@@ -7,12 +7,13 @@ SPDX-License-Identifier: MIT
 -->
 <c-vars brand="mersenne" brand_url="/" />
 <div class="navbar bg-neutral text-neutral-content shadow-lg">
-  <div class="navbar-start">
-    <a href="{{ brand_url }}" class="btn btn-ghost text-xl font-bold tracking-tight">
-      {{ brand }}
-    </a>
-  </div>
-  <div class="navbar-end gap-1">
-    {{ slot }}
-  </div>
+    <div class="navbar-start">
+        <a
+            href="{{ brand_url }}"
+            class="btn btn-ghost text-xl font-bold tracking-tight"
+        >
+            {{ brand }}
+        </a>
+    </div>
+    <div class="navbar-end gap-1">{{ slot }}</div>
 </div>

@@ -1,19 +1,20 @@
 {
-    "name": "cotton-begin",
+    "name": "mersenne-frontend",
     "version": "0.0.0-dev.1",
     "private": true,
     "scripts": {
-        "lint": "biome check .",
-        "lint:write": "biome check --write .",
+        "lint": "node mersenne/frontend/scripts/biome-lint.js . && node mersenne/frontend/scripts/check-classes.js",
+        "lint:write": "node mersenne/frontend/scripts/biome-lint.js . --write",
         "dev": "vite --strictPort",
         "build": "vite build"
     },
     "devDependencies": {
-        "autoprefixer": "10.4.27",
         "@biomejs/biome": "2.4.7",
+        "@tailwindcss/postcss": "4.2.1",
+        "autoprefixer": "10.4.27",
         "daisyui": "5.5.19",
         "postcss": "8.5.8",
-        "@tailwindcss/postcss": "4.2.1",
+        "tailwindcss": "4.2.1",
         "vite": "8.0.0"
     }
 }

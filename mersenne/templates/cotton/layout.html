@@ -12,17 +12,12 @@ SPDX-License-Identifier: MIT
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>mersenne - {{ title }}</title>
-        {% load vite %}
-
-        {% vite 'main' %}
+        {% load vite %} {% vite 'main' %}
 
         {{ head }}
     </head>
     <body class="min-h-screen flex flex-col bg-base-200">
-        <c-navbar>
-        {{ header }}
-        </c-navbar>
-
+        <c-navbar> {{ header }} </c-navbar>
         {% if messages %}
         <div class="px-4 pt-4 space-y-2 max-w-screen-xl mx-auto w-full">
             {% for message in messages %}
