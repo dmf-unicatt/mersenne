@@ -27,7 +27,7 @@ RUN echo 'PS1='"'"'\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[
 RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
 # Installa dipendenze per database
-RUN apt install -y -qq libpq-dev postgresql postgresql-client postgresql-contrib python3-psycopg2
+RUN apt install -y -qq libpq-dev postgresql postgresql-client python3-psycopg2
 
 # L'installazione di postgres crea un nuovo utente; concedi a questo utente
 # di accedere in sola lettura a /root
