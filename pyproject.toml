@@ -51,6 +51,7 @@ lint = [
     "django-stubs==5.2.9",
     "mypy==1.19.1",
     "ruff==0.15.6",
+    "types-requests==2.32.4.20260107",
     "yamllint==1.38.0"
 ]
 tests = [
@@ -60,6 +61,7 @@ tests = [
     "pytest==9.0.2",
     "pytest-django==4.12.0",
     "pytest-random-order==1.2.0",
+    "requests==2.32.5",
     "uvicorn==0.42.0"
 ]
 

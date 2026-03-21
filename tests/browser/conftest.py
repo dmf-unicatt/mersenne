@@ -12,6 +12,7 @@ import pytest
 
 import mersenne_test_utils.fixtures
 
+_live_server_helper = mersenne_test_utils.fixtures._live_server_helper
 data_dir = mersenne_test_utils.fixtures.data_dir
 live_server = mersenne_test_utils.fixtures.live_server
 verifica_screenshot = mersenne_test_utils.fixtures.verifica_screenshot

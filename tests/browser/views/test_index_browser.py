@@ -3,7 +3,7 @@
 # Questo file fa parte di mersenne.
 #
 # SPDX-License-Identifier: MIT
-"""File vuoto in attesa che vengano aggiunti test reali."""
+"""Verifica interattiva della pagina iniziale."""
 
 import playwright.sync_api
 
