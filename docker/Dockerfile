@@ -7,6 +7,8 @@
 ARG VERSIONE_DEBIAN=latest
 FROM debian:${VERSIONE_DEBIAN}
 
+ARG VERSIONE_DEBIAN
+
 WORKDIR /root
 
 ## Parte 1: installa dipendenze da apt
@@ -36,7 +38,13 @@ RUN apt install -y -qq npm
 
 # Installa dipendenze per browser
 RUN python3 -m pip install playwright && \
-    playwright install-deps && \
+    if [ "$VERSIONE_DEBIAN" = "13" ]; then \
+        playwright install-deps; \
+    elif [ "$VERSIONE_DEBIAN" = "testing" ] || [ "$VERSIONE_DEBIAN" = "unstable" ]; then \
+        playwright install-deps --dry-run | sed "s/libasound2 //g" | sed "s/libxml2 /libxml2-16 /g" | bash -eux -; \
+    else \
+        echo "Versione di Debian non riconosciuta: $VERSIONE_DEBIAN. Non posso installare le dipendenze per Playwright."; \
+    fi && \
     apt install -y -qq fonts-noto && \
     playwright install
 
