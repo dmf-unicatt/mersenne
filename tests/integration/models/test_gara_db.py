@@ -7,8 +7,7 @@
 
 import pytest
 
-import mersenne.models
-import mersenne.services.test
+import mersenne_test_utils.factories
 
 
 @pytest.mark.django_db
@@ -18,7 +17,7 @@ def test_creazione_gara_db() -> None:
 
     I controlli sulle relazioni inverse necessitano di un database attivo.
     """
-    gara, squadre, problemi = mersenne.services.test.crea_gara(
+    gara, squadre, problemi = mersenne_test_utils.factories.crea_gara(
         django_db=True,
         nome="Gara di test",
         num_squadre=(2, 1),
@@ -64,22 +63,22 @@ def test_gara_amministratore_inseritori_db() -> None:
     Il campo inseritori, che è di tipo ManyToManyField, necessita
     di un database attivo per essere popolato.
     """
-    amministratore = mersenne.services.test.crea_utente(
+    amministratore = mersenne_test_utils.factories.crea_utente(
         django_db=True,
         username="admin_test",
         is_superuser=False,
     )
-    utente1 = mersenne.services.test.crea_utente(
+    utente1 = mersenne_test_utils.factories.crea_utente(
         django_db=True,
         username="user1_test",
         is_superuser=False,
     )
-    utente2 = mersenne.services.test.crea_utente(
+    utente2 = mersenne_test_utils.factories.crea_utente(
         django_db=True,
         username="user2_test",
         is_superuser=False,
     )
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=True, nome="Gara di test", amministratore=amministratore
     )
     gara.inseritori.set([utente1, utente2])

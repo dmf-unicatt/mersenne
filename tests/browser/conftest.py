@@ -10,11 +10,11 @@ import typing
 import playwright.sync_api
 import pytest
 
-import mersenne.services.test
+import mersenne_test_utils.fixtures
 
-data_dir = mersenne.services.test.data_dir
-live_server = mersenne.services.test.live_server
-verifica_screenshot = mersenne.services.test.verifica_screenshot
+data_dir = mersenne_test_utils.fixtures.data_dir
+live_server = mersenne_test_utils.fixtures.live_server
+verifica_screenshot = mersenne_test_utils.fixtures.verifica_screenshot
 
 
 @pytest.fixture(scope="session")

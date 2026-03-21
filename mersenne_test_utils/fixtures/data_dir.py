@@ -9,7 +9,7 @@ import pathlib
 
 import pytest
 
-_data_dir = pathlib.Path(__file__).parent.parent.parent.parent / "data"
+_data_dir = pathlib.Path(__file__).parents[2] / "data"
 
 
 @pytest.fixture

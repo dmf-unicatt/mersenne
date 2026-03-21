@@ -7,13 +7,13 @@
 
 import playwright.sync_api
 
-import mersenne.services.test
+import mersenne_test_utils.fixtures
 
 
 def test_index_screenshot(
-    live_server: mersenne.services.test.LiveServer,
+    live_server: mersenne_test_utils.fixtures.LiveServer,
     page: playwright.sync_api.Page,
-    verifica_screenshot: mersenne.services.test.VerificaScreenshotType,
+    verifica_screenshot: mersenne_test_utils.fixtures.VerificaScreenshotType,
 ) -> None:
     """Verifica che l'home page corrisponda allo screenshot atteso."""
     page.goto(f"{live_server}")

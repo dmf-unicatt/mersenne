@@ -13,9 +13,9 @@ e le fixture 'rf' e 'async_rf' (perché test che necessitano di request factory
 senza client fanno parte dei test di unità).
 """
 
-import mersenne.services.test
+import mersenne_test_utils.fixtures
 
-data_dir = mersenne.services.test.data_dir
+data_dir = mersenne_test_utils.fixtures.data_dir
 
 
 _pytest_django_fixtures = [
@@ -24,4 +24,4 @@ _pytest_django_fixtures = [
     "rf",
 ]
 for _ in _pytest_django_fixtures:
-    globals()[_] = mersenne.services.test.disabilita_fixture(_)
+    globals()[_] = mersenne_test_utils.fixtures.disabilita_fixture(_)

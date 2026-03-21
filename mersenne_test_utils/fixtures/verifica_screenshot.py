@@ -46,7 +46,7 @@ def verifica_screenshot(
     evidenziate in rosso.
     """
     # Determina il percorso della cartella principale del repository
-    repo_root = pathlib.Path(__file__).parents[3]
+    repo_root = pathlib.Path(__file__).parents[2]
     # Determina il percorso del file di test
     test_path = request.path.resolve()
     test_dir_name = test_path.relative_to(

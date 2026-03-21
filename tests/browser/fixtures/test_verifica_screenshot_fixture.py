@@ -12,7 +12,7 @@ import socket
 import playwright.sync_api
 import pytest
 
-import mersenne.services.test
+import mersenne_test_utils.fixtures
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def necessita_internet() -> None:
 
 def test_verifica_screenshot_example_org_successo(
     page: playwright.sync_api.Page,
-    verifica_screenshot: mersenne.services.test.VerificaScreenshotType,
+    verifica_screenshot: mersenne_test_utils.fixtures.VerificaScreenshotType,
     necessita_internet: None,
 ) -> None:
     """Verifica la fixture con uno screenshot di confronto corretto."""
@@ -37,7 +37,7 @@ def test_verifica_screenshot_example_org_successo(
 
 def test_verifica_screenshot_example_org_dimensione_errata(
     page: playwright.sync_api.Page,
-    verifica_screenshot: mersenne.services.test.VerificaScreenshotType,
+    verifica_screenshot: mersenne_test_utils.fixtures.VerificaScreenshotType,
     necessita_internet: None,
 ) -> None:
     """Verifica la fixture rispetto uno screenshot di dimensioni errate."""
@@ -56,7 +56,7 @@ def test_verifica_screenshot_example_org_dimensione_errata(
 
 def test_verifica_screenshot_example_org_contenuto_diverso(
     page: playwright.sync_api.Page,
-    verifica_screenshot: mersenne.services.test.VerificaScreenshotType,
+    verifica_screenshot: mersenne_test_utils.fixtures.VerificaScreenshotType,
     necessita_internet: None,
 ) -> None:
     """Verifica la fixture rispetto uno screenshot di contenuto diverso."""

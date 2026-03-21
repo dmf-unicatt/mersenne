@@ -93,6 +93,7 @@ ignore = ["D203", "D213", "D401"]
 
 [tool.ruff.lint.per-file-ignores]
 "mersenne/**/__init__.py" = ["F401"]
+"mersenne_test_utils/**/__init__.py" = ["F401"]
 
 [tool.ruff.lint.pycodestyle]
 max-doc-length = 80

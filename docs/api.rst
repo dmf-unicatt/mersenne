@@ -7,9 +7,9 @@ API reference
    mersenne
    mersenne.admin
    mersenne.apps
+   mersenne.middleware
    mersenne.models
    mersenne.services
-   mersenne.services.test
    mersenne.templatetags
    mersenne.urls
    mersenne.views

@@ -7,14 +7,13 @@
 
 import pytest
 
-import mersenne.models
-import mersenne.services.test
+import mersenne_test_utils.factories
 
 
 @pytest.mark.django_db
 def test_creazione_amministratore_db() -> None:
     """Verifica la creazione di un utente amministratore nel db."""
-    amministratore = mersenne.services.test.crea_utente(
+    amministratore = mersenne_test_utils.factories.crea_utente(
         django_db=True,
         username="admin_test",
         email="admin@test.com",
@@ -29,7 +28,7 @@ def test_creazione_amministratore_db() -> None:
 @pytest.mark.django_db
 def test_creazione_utente_db() -> None:
     """Verifica la creazione di un utente normale nel db."""
-    utente = mersenne.services.test.crea_utente(
+    utente = mersenne_test_utils.factories.crea_utente(
         django_db=True,
         username="user_test",
         email="user@test.com",

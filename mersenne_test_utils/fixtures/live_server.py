@@ -49,7 +49,7 @@ class LiveServer:  # pragma: no cover
             # Avvia il processo npm (vite) in background
             self.npm_proc = subprocess.Popen(
                 ["node_modules/.bin/vite", "--port", str(vite_port)],
-                cwd=pathlib.Path(__file__).parents[3],
+                cwd=pathlib.Path(__file__).parents[2],
                 preexec_fn=os.setsid,
             )
 

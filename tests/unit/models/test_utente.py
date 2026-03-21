@@ -8,7 +8,7 @@
 import django.contrib.auth
 
 import mersenne.models
-import mersenne.services.test
+import mersenne_test_utils.factories
 
 
 def test_get_user_model() -> None:
@@ -18,7 +18,7 @@ def test_get_user_model() -> None:
 
 def test_creazione_amministratore() -> None:
     """Verifica la creazione di un utente amministratore."""
-    amministratore = mersenne.services.test.crea_utente(
+    amministratore = mersenne_test_utils.factories.crea_utente(
         django_db=False,
         username="admin_test",
         email="admin@test.com",
@@ -32,7 +32,7 @@ def test_creazione_amministratore() -> None:
 
 def test_creazione_utente() -> None:
     """Verifica la creazione di un utente normale (non amministratore)."""
-    utente = mersenne.services.test.crea_utente(
+    utente = mersenne_test_utils.factories.crea_utente(
         django_db=False,
         username="user_test",
         email="user@test.com",

@@ -12,7 +12,7 @@ consentono l'accesso al database, al client di test o al server live.
 
 import pytest
 
-import mersenne.services.test
+import mersenne_test_utils.fixtures
 
 # Disabilita i marker di pytest-django
 
@@ -53,7 +53,7 @@ _pytest_django_fixtures = [
     "transactional_db",
 ]
 for _ in _pytest_django_fixtures:
-    globals()[_] = mersenne.services.test.disabilita_fixture(_)
+    globals()[_] = mersenne_test_utils.fixtures.disabilita_fixture(_)
 
 
 # Esporta _pytest_django_markers e _pytest_django_fixtures per i test

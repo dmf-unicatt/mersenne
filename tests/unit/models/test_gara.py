@@ -12,12 +12,12 @@ import django.utils.timezone
 import pytest
 
 import mersenne.models
-import mersenne.services.test
+import mersenne_test_utils.factories
 
 
 def test_creazione_gara() -> None:
     """Verifica la creazione di una gara."""
-    gara, squadre, problemi = mersenne.services.test.crea_gara(
+    gara, squadre, problemi = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         num_squadre=(2, 1),
@@ -53,12 +53,12 @@ def test_creazione_gara() -> None:
 
 def test_gara_amministratore() -> None:
     """Verifica che un utente normale può essere amministratore di una gara."""
-    utente = mersenne.services.test.crea_utente(
+    utente = mersenne_test_utils.factories.crea_utente(
         django_db=False,
         username="user_test",
         is_superuser=False,
     )
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False, nome="Gara di test", amministratore=utente
     )
     assert gara.amministratore == utente
@@ -66,7 +66,7 @@ def test_gara_amministratore() -> None:
 
 def test_servizio_crea_gara_num_squadre_default() -> None:
     """Verifica il servizio crea_gara con valore di default per num_squadre."""
-    _, squadre, _ = mersenne.services.test.crea_gara(
+    _, squadre, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         num_squadre=None,
@@ -77,7 +77,7 @@ def test_servizio_crea_gara_num_squadre_default() -> None:
 
 def test_servizio_crea_gara_num_squadre_int() -> None:
     """Verifica il servizio crea_gara con int per num_squadre."""
-    _, squadre, _ = mersenne.services.test.crea_gara(
+    _, squadre, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         num_squadre=3,
@@ -88,7 +88,7 @@ def test_servizio_crea_gara_num_squadre_int() -> None:
 
 def test_servizio_crea_gara_num_squadre_tupla() -> None:
     """Verifica il servizio crea_gara con tupla per num_squadre."""
-    _, squadre, _ = mersenne.services.test.crea_gara(
+    _, squadre, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         num_squadre=(2, 1),
@@ -101,7 +101,7 @@ def test_servizio_crea_gara_num_squadre_tupla() -> None:
 
 def test_servizio_crea_gara_soluzioni_default() -> None:
     """Verifica il servizio crea_gara con valore di default per soluzioni."""
-    _, _, problemi = mersenne.services.test.crea_gara(
+    _, _, problemi = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         soluzioni=None,
@@ -122,7 +122,7 @@ def test_servizio_crea_gara_soluzioni_default() -> None:
 
 def test_servizio_crea_gara_soluzioni_lista() -> None:
     """Verifica il servizio crea_gara con lista per soluzioni."""
-    _, _, problemi = mersenne.services.test.crea_gara(
+    _, _, problemi = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         soluzioni=[123, 456, 789, 1000],
@@ -134,7 +134,7 @@ def test_servizio_crea_gara_soluzioni_lista() -> None:
 def test_gara_iniziata() -> None:
     """Verifica l'attributo Gara.iniziata per una gara iniziata."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente,
@@ -148,7 +148,7 @@ def test_gara_iniziata() -> None:
 def test_gara_sospesa(iniziata: bool) -> None:
     """Verifica l'attributo Gara.sospesa per una gara sospesa."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=(
@@ -166,7 +166,7 @@ def test_gara_sospesa(iniziata: bool) -> None:
 def test_gara_terminata() -> None:
     """Verifica l'attributo Gara.terminata per una gara terminata."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente - datetime.timedelta(minutes=10),
@@ -179,7 +179,7 @@ def test_gara_terminata() -> None:
 
 def test_gara_orario_fine_non_iniziata() -> None:
     """Verifica l'attributo Gara.orario_fine per una gara non iniziata."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
     )
@@ -189,7 +189,7 @@ def test_gara_orario_fine_non_iniziata() -> None:
 def test_gara_orario_fine_sospesa() -> None:
     """Verifica l'attributo Gara.orario_fine per una gara sospesa."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente - datetime.timedelta(minutes=5),
@@ -201,7 +201,7 @@ def test_gara_orario_fine_sospesa() -> None:
 def test_gara_orario_fine_iniziata() -> None:
     """Verifica l'attributo Gara.orario_fine per una gara iniziata."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente,
@@ -212,7 +212,7 @@ def test_gara_orario_fine_iniziata() -> None:
 
 def test_gara_tempo_rimanente_non_iniziata() -> None:
     """Verifica l'attributo Gara.tempo_rimanente per una gara non iniziata."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
     )
@@ -222,7 +222,7 @@ def test_gara_tempo_rimanente_non_iniziata() -> None:
 def test_gara_tempo_rimanente_sospesa() -> None:
     """Verifica l'attributo Gara.orario_fine per una gara sospesa."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente - datetime.timedelta(minutes=7),
@@ -235,7 +235,7 @@ def test_gara_tempo_rimanente_sospesa() -> None:
 def test_gara_tempo_rimanente_non_finita() -> None:
     """Verifica l'attributo Gara.tempo_rimanente per una gara non finita."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente - datetime.timedelta(minutes=2),
@@ -248,7 +248,7 @@ def test_gara_tempo_rimanente_non_finita() -> None:
 def test_gara_tempo_rimanente_finita() -> None:
     """Verifica l'attributo Gara.tempo_rimanente per una gara finita."""
     orario_corrente = django.utils.timezone.now()
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         orario_inizio=orario_corrente - datetime.timedelta(minutes=10),
@@ -259,7 +259,7 @@ def test_gara_tempo_rimanente_finita() -> None:
 
 def test_gara_validazioni_bonus_successo() -> None:
     """Valida con successo i campi bonus problema/finale."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         bonus_problema=[3, 2, 1],
@@ -275,7 +275,7 @@ def test_gara_validazioni_bonus_fallimento_tipo_esterno_errato(
     campo_str: str,
 ) -> None:
     """Fallimento nella validazione dei campi bonus per tipo esterno errato."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         **{campo_str: (3, 2, 1)},  # type: ignore[arg-type]
@@ -293,7 +293,7 @@ def test_gara_validazioni_bonus_fallimento_tipo_interno_errato(
     campo_str: str,
 ) -> None:
     """Fallimento nella validazione dei campi bonus per tipo interno errato."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         **{campo_str: [3.5, 2.6, 1.7]},  # type: ignore[arg-type]
@@ -311,7 +311,7 @@ def test_gara_validazioni_bonus_fallimento_segno_errato(
     campo_str: str,
 ) -> None:
     """Fallimento nella validazione dei campi bonus per segno errato."""
-    gara, _, _ = mersenne.services.test.crea_gara(
+    gara, _, _ = mersenne_test_utils.factories.crea_gara(
         django_db=False,
         nome="Gara di test",
         **{campo_str: [3, -2, 1]},  # type: ignore[arg-type]
