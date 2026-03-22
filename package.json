@@ -9,7 +9,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.4.7",
+        "@biomejs/biome": "2.4.8",
         "@tailwindcss/postcss": "4.2.1",
         "autoprefixer": "10.4.27",
         "daisyui": "5.5.19",
