@@ -7,7 +7,7 @@ authors = [
 maintainers = [
     {name = "Francesco Ballarin", email = "francesco.ballarin@unicatt.it"}
 ]
-description = "Gestore di gare a squadre (backend)"
+description = "Backend per la gestione di gare a squadre"
 license = "MIT"
 requires-python = ">=3.14"
 classifiers = [
