@@ -40,7 +40,7 @@ jobs:
       - name: Installa uv
         uses: astral-sh/setup-uv@v7
       - name: Installa dipendenze del backend
-        run: uv sync
+        run: uv sync --frozen
       - name: Esegui prek senza correzioni automatiche
         if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.actor != 'dependabot[bot]')
         run: |
