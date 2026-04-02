@@ -44,6 +44,7 @@ funding = "https://github.com/sponsors/francesco-ballarin"
 [dependency-groups]
 dev = [
     "coverage[toml]>=7.4.3",
+    "poethepoet>=0.42.1",
     "prek>=0.2.24",
     "pydoc-markdown>=4.8.2",
     "pytest>=7.4.3",
@@ -58,6 +59,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/mersenne_backend"]
+
+[tool.poe.tasks]
+dev = "fastapi dev --reload --host 0.0.0.0 --port 8000 main.py"
+preview = "fastapi run --host 0.0.0.0 --port 8000 --workers 4 main.py"
 
 [tool.ruff]
 line-length = 80
