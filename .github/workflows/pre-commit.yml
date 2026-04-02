@@ -1,0 +1,63 @@
+name: Esegui pre-commit
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * MON"
+  workflow_dispatch:
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Checkout del pull request
+        if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Checkout del pull request di Dependabot
+        if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.PRE_COMMIT_TOKEN }}
+      - name: Installa Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Installa uv
+        uses: astral-sh/setup-uv@v7
+      - name: Installa dipendenze del backend
+        run: uv sync
+      - name: Esegui prek senza correzioni automatiche
+        if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.actor != 'dependabot[bot]')
+        run: |
+          uv run prek --all-files --show-diff-on-failure
+      - name: Esegui prek con correzioni automatiche per Dependabot
+        if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
+        run: |
+          EXIT_CODE=0
+          uv run prek --all-files --show-diff-on-failure || EXIT_CODE=$?
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica effettuata da prek"
+          else
+            git commit -m "Applica correzioni automatiche da prek"
+            git push origin HEAD:${GITHUB_HEAD_REF}
+            echo "Correzioni automatiche applicate da prek"
+          fi
+          exit ${EXIT_CODE}
