@@ -13,3 +13,43 @@ hooks = [
     {id = "end-of-file-fixer"},
     {id = "trailing-whitespace"}
 ]
+
+
+[[repos]]
+repo = "local"
+hooks = [
+    {
+        id = "echo",
+        name = "Elenca file modificati",
+        entry = "echo",
+        language = "system",
+        types = ["text"]
+    },
+    {
+        id = "ruff-check",
+        name = "Esegui ruff check in seguito a modifiche nel backend",
+        entry = "uv run ruff check --force-exclude --fix --exit-non-zero-on-fix",
+        require_serial = true,
+        language = "unsupported",
+        types = ["python"],
+        files = "^backend/.*$"
+    },
+    {
+        id = "ruff-format",
+        name = "Esegui ruff format in seguito a modifiche nel backend",
+        entry = "uv run ruff format --force-exclude --exit-non-zero-on-format",
+        require_serial = true,
+        language = "unsupported",
+        types = ["python"],
+        files = "^backend/.*$"
+    },
+    {
+        id = "ty-check",
+        name = "Esegui ty check in seguito a modifiche nel backend",
+        entry = "uv run ty check --error-on-warning",
+        require_serial = true,
+        language = "unsupported",
+        types = ["python"],
+        files = "^backend/.*$"
+    },
+]
