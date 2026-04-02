@@ -8,3 +8,8 @@ services:
     restart: no
     ports:
       - "6379:6379"
+
+  backend:
+    restart: no
+    ports:
+      - "8000:8000"

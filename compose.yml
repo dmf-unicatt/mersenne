@@ -23,3 +23,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/docker/Dockerfile
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+      redis:
+        condition: service_healthy
+        restart: true
