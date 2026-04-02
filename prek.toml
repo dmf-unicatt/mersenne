@@ -44,6 +44,14 @@ hooks = [
         files = "^backend/.*$"
     },
     {
+        id = "spdx",
+        name = "Verifica presenza header SPDX",
+        entry = '''bash -lc 'set -euo pipefail; git ls-files | grep -vE "\.dockerignore$|\.gitignore$|\.lock$|\.toml$|\.typed$|\.yml$|^AUTHORS$|^LICENSE$" | while read -r f; do head -n 7 "$f" | grep -q "SPDX-License-Identifier:" || echo "SPDX mancante: $f"; done | grep "SPDX mancante:" && exit 1 || exit 0' ''',
+        pass_filenames = false,
+        language = "system",
+        types = ["text"]
+    },
+    {
         id = "ty-check",
         name = "Esegui ty check in seguito a modifiche nel backend",
         entry = "uv run ty check --error-on-warning",
