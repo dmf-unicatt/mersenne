@@ -9,6 +9,7 @@ on:
       - main
   schedule:
     - cron: "0 0 * * MON"
+      timezone: "Europe/Rome"
   workflow_dispatch:
 
 jobs:
