@@ -1,5 +1,7 @@
+.coverage
 .ruff_cache
 .venv
 .vscode
 __pycache__
+backend/.coverage
 backend/.ruff_cache

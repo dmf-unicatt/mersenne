@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: MIT
 """Verifica le impostazioni lette dalle variabili d'ambiente e dal file .env."""
 
+import os
 import pathlib
 import typing
 
@@ -60,6 +61,19 @@ def test_determina_env_file_in_docker(monkeypatch: pytest.MonkeyPatch) -> None:
     assert env_file is None
 
 
+@pytest.mark.skipif(
+    os.getenv("IN_DOCKER", "false") == "true",
+    reason="Il file .env di default non esiste dentro a Docker",
+)
+def test_default_env_esiste() -> None:
+    """Verifica che il file .env di default esista (eccetto dentro a Docker)."""
+    assert ENV_FILE_DEFAULT.exists()
+
+
+@pytest.mark.skipif(
+    not ENV_FILE_DEFAULT.exists(),
+    reason="Il file .env di default non esiste",
+)
 def test_default_env_file_contiene_tutti_i_campi() -> None:
     """Verifica che il file .env di default contenga tutti i campi necessari."""
     campi_presenti: list[str] = []
@@ -80,6 +94,10 @@ def test_default_env_file_contiene_tutti_i_campi() -> None:
     )
 
 
+@pytest.mark.skipif(
+    not ENV_FILE_DEFAULT.exists(),
+    reason="Il file .env di default non esiste",
+)
 def test_default_env_file_costruisce_impostazioni_correttamente(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

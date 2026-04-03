@@ -64,7 +64,15 @@ packages = ["src/mersenne_backend"]
 dev = "fastapi dev --reload main.py"
 preview = "fastapi run --host 127.0.0.1 --workers 4 main.py"
 deploy = "fastapi run --workers 4 main.py"
-test = "uv run pytest"
+test = "pytest"
+coverage-run = "coverage run --source=mersenne_backend -m pytest"
+coverage-report = "coverage report --fail-under=100 --show-missing --skip-covered"
+coverage = ["coverage-run", "coverage-report"]
+docker-build = "docker compose build backend"
+docker-test = "docker compose run --rm backend poe test"
+docker-up = "docker compose up -d backend"
+act = "act -C .. push -W .github/workflows/backend.yml -j test-backend"
+act-docker = "act -C .. push -W .github/workflows/backend.yml -j test-backend-docker"
 
 [tool.ruff]
 line-length = 80

@@ -39,7 +39,7 @@ RUN --mount=type=cache,id=mersenne-uv-cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=bind,source=backend,target=backend \
-    uv sync --frozen
+    uv sync --frozen --no-editable
 
 # Copia il punto di ingresso dell'applicazione
 # Nota che
@@ -53,4 +53,5 @@ RUN --mount=type=cache,id=mersenne-uv-cache,target=/root/.cache/uv \
 WORKDIR /mersenne/backend
 COPY ./backend/main.py /mersenne/backend/main.py
 COPY ./backend/pyproject.toml /mersenne/backend/pyproject.toml
+COPY ./backend/tests /mersenne/backend/tests
 CMD ["poe", "deploy"]

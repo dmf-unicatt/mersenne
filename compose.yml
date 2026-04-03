@@ -3,7 +3,7 @@ services:
     image: postgres:18.3
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${UTENTE_POSTGRES:?Variabile non definita} -d ${DB_POSTGRES:?Variabile non definita}"]
+      test: ["CMD-SHELL", "pg_isready -U ${UTENTE_POSTGRES:?Variabile non definita} -d ${DATABASE_POSTGRES:?Variabile non definita}"]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_USER=${UTENTE_POSTGRES:?Variabile non definita}
       - POSTGRES_PASSWORD=${PASSWORD_POSTGRES:?Variabile non definita}
-      - POSTGRES_DB=${DB_POSTGRES:?Variabile non definita}
+      - POSTGRES_DB=${DATABASE_POSTGRES:?Variabile non definita}
 
   redis:
     image: redis:8.6.2

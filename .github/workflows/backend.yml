@@ -1,0 +1,62 @@
+name: CI per il backend
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * MON"
+      timezone: "Europe/Rome"
+  workflow_dispatch:
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v6
+      - name: Installa Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Installa uv
+        uses: astral-sh/setup-uv@v7
+      - name: Installa backend
+        run: uv sync --frozen
+      - name: Avvia i servizi di postgres e redis
+        run: docker compose up -d postgres redis
+      - name: Avvia test del backend
+        run: uv run poe coverage-run
+        working-directory: backend
+      - name: Stampa report di coverage
+        run: uv run poe coverage-report
+        working-directory: backend
+      - name: Ferma i servizi di postgres e redis
+        run: docker compose down postgres redis --remove-orphans
+
+  test-backend-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v6
+      - name: Avvia i servizi di postgres e redis
+        run: docker compose up -d postgres redis
+      - name: Costruisci l'immagine del backend
+        run: docker compose build backend
+      - name: Avvia test del backend
+        run: docker compose run --rm backend poe test
+      - name: Ferma i servizi di postgres e redis
+        run: docker compose down postgres redis --remove-orphans
+
+  controllo-disabilitazione-workflow-periodico:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    steps:
+      - name: Avvisa se il workflow periodico sta per essere disabilitato
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        with:
+          workflow-filename: backend.yml
+          days-elapsed: 50
