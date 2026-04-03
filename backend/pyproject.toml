@@ -64,6 +64,7 @@ packages = ["src/mersenne_backend"]
 dev = "fastapi dev --reload main.py"
 preview = "fastapi run --host 127.0.0.1 --workers 4 main.py"
 deploy = "fastapi run --workers 4 main.py"
+test = "uv run pytest"
 
 [tool.ruff]
 line-length = 80
