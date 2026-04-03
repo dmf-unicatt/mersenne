@@ -63,7 +63,7 @@ hooks = [
     {
         id = "yamllint",
         name = "Esegui yamllint in seguito a modifiche nei file yaml",
-        entry = "uv run yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable, truthy: {check-keys: false}}}'",
+        entry = "uv run yamllint --strict -d '{extends: default, rules: {document-start: {present: false}, line-length: disable, truthy: {check-keys: false}}}'",
         language = "unsupported",
         types = ["text"],
         files = "\\.(yml|yaml)$"
