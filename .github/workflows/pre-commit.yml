@@ -62,3 +62,13 @@ jobs:
             echo "Correzioni automatiche applicate da prek"
           fi
           exit ${EXIT_CODE}
+
+  controllo-disabilitazione-workflow-periodico:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    steps:
+      - name: Avvisa se il workflow periodico sta per essere disabilitato
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        with:
+          workflow-filename: pre-commit.yml
+          days-elapsed: 50
