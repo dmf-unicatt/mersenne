@@ -4,4 +4,5 @@
 .vscode
 __pycache__
 backend/.coverage
+backend/.pytest_cache
 backend/.ruff_cache
