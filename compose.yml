@@ -3,23 +3,23 @@ services:
     image: postgres:18.3
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${UTENTE_POSTGRES:-postgres} -d ${DB_POSTGRES:-mersenne}"]
+      test: ["CMD-SHELL", "pg_isready -U ${UTENTE_POSTGRES:?Variabile non definita} -d ${DB_POSTGRES:?Variabile non definita}"]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 10s
     environment:
-      - POSTGRES_USER=${UTENTE_POSTGRES:-postgres}
-      - POSTGRES_PASSWORD=${PASSWORD_POSTGRES:-password}
-      - POSTGRES_DB=${DB_POSTGRES:-mersenne}
+      - POSTGRES_USER=${UTENTE_POSTGRES:?Variabile non definita}
+      - POSTGRES_PASSWORD=${PASSWORD_POSTGRES:?Variabile non definita}
+      - POSTGRES_DB=${DB_POSTGRES:?Variabile non definita}
 
   redis:
     image: redis:8.6.2
     restart: always
     command: >
-      redis-server --requirepass ${PASSWORD_REDIS:-password}
+      redis-server --requirepass ${PASSWORD_REDIS:?Variabile non definita}
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${PASSWORD_REDIS:-password}", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${PASSWORD_REDIS:?Variabile non definita}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,3 +36,9 @@ services:
       redis:
         condition: service_healthy
         restart: true
+    environment:
+      - IN_DOCKER=true
+      - UTENTE_POSTGRES=${UTENTE_POSTGRES:?Variabile non definita}
+      - PASSWORD_POSTGRES=${PASSWORD_POSTGRES:?Variabile non definita}
+      - DATABASE_POSTGRES=${DATABASE_POSTGRES:?Variabile non definita}
+      - PASSWORD_REDIS=${PASSWORD_REDIS:?Variabile non definita}
