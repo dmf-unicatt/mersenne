@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-backend:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del repository
@@ -37,7 +37,7 @@ jobs:
       - name: Ferma i servizi di postgres e redis
         run: docker compose down postgres redis --remove-orphans
 
-  test-backend-docker:
+  test-docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del repository
