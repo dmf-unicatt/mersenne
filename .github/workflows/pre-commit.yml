@@ -18,28 +18,28 @@ jobs:
     steps:
       - name: Checkout del repository
         if: github.event_name != 'pull_request'
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           fetch-depth: 0
       - name: Checkout del pull request
         if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Checkout del pull request di Dependabot
         if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
           token: ${{ secrets.PRE_COMMIT_TOKEN }}
       - name: Installa Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
         with:
           python-version: "3.14"
       - name: Installa uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57  # v8.0.0
       - name: Installa dipendenze del backend
         run: uv sync --frozen
       - name: Esegui prek senza correzioni automatiche
@@ -68,7 +68,7 @@ jobs:
     if: github.repository == 'dmf-unicatt/mersenne' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
     steps:
       - name: Avvisa se il workflow periodico sta per essere disabilitato
-        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@58c6022d9aeb22accfa8df9bf5b58c3d8867208c  # v1.0.0
         with:
           workflow-filename: pre-commit.yml
           days-elapsed: 50
