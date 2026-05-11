@@ -718,7 +718,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">2.0" },
     { name = "pydantic-settings", specifier = ">=2.2.1" },
     { name = "pyjwt", specifier = ">=2.8.0" },
-    { name = "python-multipart", specifier = ">=0.0.28" },
+    { name = "python-multipart", specifier = ">=0.0.7" },
     { name = "redis", specifier = ">=5.2.1" },
     { name = "tortoise-orm", extras = ["asyncpg"], specifier = ">=0.25.1" },
 ]
