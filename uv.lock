@@ -721,7 +721,7 @@ requires-dist = [
     { name = "pyjwt", specifier = ">=2.8.0" },
     { name = "python-multipart", specifier = ">=0.0.7" },
     { name = "redis", specifier = ">=5.2.1" },
-    { name = "tortoise-orm", extras = ["asyncpg"], specifier = ">=1.1.7" },
+    { name = "tortoise-orm", extras = ["asyncpg"], specifier = ">=0.25.1" },
 ]
 
 [package.metadata.requires-dev]
