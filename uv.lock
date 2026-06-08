@@ -713,7 +713,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "anyio", specifier = ">=4.0.0" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.114.2" },
     { name = "httpx", specifier = ">=0.25.1" },
     { name = "pwdlib", extras = ["argon2", "bcrypt"], specifier = ">=0.3.0" },
     { name = "pydantic", specifier = ">2.0" },
