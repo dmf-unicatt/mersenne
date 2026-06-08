@@ -726,7 +726,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", extras = ["toml"], specifier = ">=7.14.1" },
+    { name = "coverage", extras = ["toml"], specifier = ">=7.4.3" },
     { name = "poethepoet", specifier = ">=0.42.1" },
     { name = "prek", specifier = ">=0.2.24" },
     { name = "pydoc-markdown", specifier = ">=4.8.2" },
